@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interaction Result</title>
+</head>
+<body>
+    <h1>Interaction Result</h1>
+    <p><strong>Prompt:</strong> {{ interaction.prompt }}</p>
+    <p><strong>Response:</strong> {{ interaction.response }}</p>
+    <a href="{% url 'interaction_form' %}">Try Another Prompt</a>
+</body>
+</html>
+
