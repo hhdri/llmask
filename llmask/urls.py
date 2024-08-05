@@ -19,6 +19,4 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('model_manager.urls')),
-    path('interact/', include('model_ask.urls')),
 ]
