@@ -16,10 +16,11 @@ class LLM(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.provider_name} - {self.model_name_version}"
+        return self.slug
 
 
 class SystemPrompt(models.Model):
+    name = models.CharField(max_length=100, null=False)
     prompt = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -27,6 +28,9 @@ class SystemPrompt(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["prompt"], name="unique_system_prompt"),
         ]
+
+    def __str__(self):
+        return self.name
 
 
 class UserPrompt(models.Model):
@@ -37,6 +41,9 @@ class UserPrompt(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["prompt"], name="unique_prompt"),
         ]
+
+    def __str__(self):
+        return self.prompt
 
 
 class Interaction(models.Model):
