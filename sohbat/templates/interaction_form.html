@@ -18,11 +18,11 @@
         </select><br><br>
         
         <label for="system_prompt">Select System Prompt:</label><br>
-        <select name="system_prompt" id="system_prompt" required>
-            {% for system_prompt in system_prompts %}
-            <option value="{{ system_prompt.id }}">{{ system_prompt.name }}: {{ system_prompt.prompt }}</option>
-            {% endfor %}
-        </select><br><br>
+        {% for system_prompt in system_prompts %}
+            <input type="radio" id="system_prompt_{{ system_prompt.id }}" name="system_prompt" value="{{ system_prompt.id }}" required>
+            <label for="system_prompt_{{ system_prompt.id }}">{{ system_prompt.name }}: {{ system_prompt.prompt }}</label><br>
+        {% endfor %}
+        <br><br>
         
         <label for="user_prompt">User Prompt:</label><br>
         <input type="text" id="user_prompt" name="user_prompt" required ><br><br>
