@@ -51,5 +51,5 @@ class Interaction(models.Model):
     system_prompt = models.ForeignKey(SystemPrompt, on_delete=models.CASCADE)
     user_prompt = models.ForeignKey(UserPrompt, on_delete=models.CASCADE)
     response = models.TextField(blank=True, null=True)
-    random_seed = models.IntegerField()
+    random_seed = models.IntegerField(default=42)
     created_at = models.DateTimeField(auto_now_add=True)
