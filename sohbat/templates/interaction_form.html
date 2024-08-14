@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Interaction</title>
+</head>
+<body>
+    <h1>LLM Interaction</h1>
+    
+    <form action="/create_interaction/" method="post">
+        {% csrf_token %}
+        <label for="llm">Select LLM:</label><br>
+        <select name="llm" id="llm" required>
+            {% for llm in llms %}
+            <option value="{{ llm.id }}">{{ llm.provider_name }} - {{ llm.model_name_version }}</option>
+            {% endfor %}
+        </select><br><br>
+        
+        <label for="system_prompt">Select System Prompt:</label><br>
+        <select name="system_prompt" id="system_prompt" required>
+            {% for system_prompt in system_prompts %}
+            <option value="{{ system_prompt.id }}">{{ system_prompt.name }}</option>
+            {% endfor %}
+        </select><br><br>
+        
+        <label for="user_prompt">Select User Prompt:</label><br>
+        <select name="user_prompt" id="user_prompt" required>
+            {% for user_prompt in user_prompts %}
+            <option value="{{ user_prompt.id }}">{{ user_prompt.prompt }}</option>
+            {% endfor %}
+        </select><br><br>
+        
+        <label for="random_seed">Random Seed:</label><br>
+        <input type="number" id="random_seed" name="random_seed" value="{{ default_seed }}" required ><br><br>
+        
+        <input type="submit" value="Create Interaction">
+    </form>
+
+    <h2>Existing Interactions</h2>
+    <ul>
+        {% for interaction in interactions %}
+        <li>
+
+            LLM: {{ interaction.llm.provider_name }} - {{ interaction.llm.model_name_version }} |
+            System Prompt: {{ interaction.system_prompt.name }} |
+            User Prompt: {{ interaction.user_prompt.prompt }} |
+            Response: {{ interaction.response }} |
+            Random Seed: {{ interaction.random_seed }} |
+            Created At: {{ interaction.created_at }}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
