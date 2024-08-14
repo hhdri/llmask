@@ -6,7 +6,10 @@ def create_interaction(request):
     if request.method == "POST":
         llm = LLM.objects.get(id=request.POST['llm'])
         system_prompt = SystemPrompt.objects.get(id=request.POST['system_prompt'])
-        user_prompt = UserPrompt.objects.get(id=request.POST['user_prompt'])
+        try:
+            user_prompt = UserPrompt.objects.get(prompt=request.POST['user_prompt'])
+        except UserPrompt.DoesNotExist:
+            user_prompt = UserPrompt.objects.create(prompt=request.POST['user_prompt'])
         random_seed = int(request.POST['random_seed'])
         response = get_response(
             llm=llm,

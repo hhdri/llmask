@@ -13,23 +13,19 @@
         <label for="llm">Select LLM:</label><br>
         <select name="llm" id="llm" required>
             {% for llm in llms %}
-            <option value="{{ llm.id }}">{{ llm.provider_name }} - {{ llm.model_name_version }}</option>
+            <option value="{{ llm.id }}">{{ llm }}</option>
             {% endfor %}
         </select><br><br>
         
         <label for="system_prompt">Select System Prompt:</label><br>
         <select name="system_prompt" id="system_prompt" required>
             {% for system_prompt in system_prompts %}
-            <option value="{{ system_prompt.id }}">{{ system_prompt.name }}</option>
+            <option value="{{ system_prompt.id }}">{{ system_prompt.name }}: {{ system_prompt.prompt }}</option>
             {% endfor %}
         </select><br><br>
         
-        <label for="user_prompt">Select User Prompt:</label><br>
-        <select name="user_prompt" id="user_prompt" required>
-            {% for user_prompt in user_prompts %}
-            <option value="{{ user_prompt.id }}">{{ user_prompt.prompt }}</option>
-            {% endfor %}
-        </select><br><br>
+        <label for="user_prompt">User Prompt:</label><br>
+        <input type="text" id="user_prompt" name="user_prompt" required ><br><br>
         
         <label for="random_seed">Random Seed:</label><br>
         <input type="number" id="random_seed" name="random_seed" value="{{ default_seed }}" required ><br><br>
