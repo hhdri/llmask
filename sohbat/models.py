@@ -53,3 +53,11 @@ class Interaction(models.Model):
     response = models.TextField(blank=True, null=True)
     random_seed = models.IntegerField(default=42)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["llm", "system_prompt", "user_prompt", "random_seed"],
+                name="unique_interaction",
+            ),
+        ]
