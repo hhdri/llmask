@@ -1,13 +1,19 @@
 from django.shortcuts import render, redirect
 from .models import LLM, SystemPrompt, UserPrompt, Interaction
+from .llmapis import get_response
 
 def create_interaction(request):
     if request.method == "POST":
         llm = LLM.objects.get(id=request.POST['llm'])
         system_prompt = SystemPrompt.objects.get(id=request.POST['system_prompt'])
         user_prompt = UserPrompt.objects.get(id=request.POST['user_prompt'])
-        response = "random response"  # Replace with the actual response
-        random_seed = request.POST['random_seed']
+        random_seed = int(request.POST['random_seed'])
+        response = get_response(
+            llm=llm,
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            random_seed=random_seed
+        )
         
         interaction = Interaction.objects.create(
             llm=llm,
