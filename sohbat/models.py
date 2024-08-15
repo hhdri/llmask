@@ -42,3 +42,6 @@ class Interaction(models.Model):
                 name="unique_interaction",
             ),
         ]
+
+    def __str__(self):
+        return f"{self.llm} - {self.system_prompt} - {self.user_prompt}"
