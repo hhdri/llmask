@@ -22,5 +22,4 @@ from sohbat import views as sohbat_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('create_interaction/', sohbat_views.create_interaction, name='create_interaction'),
-    path('show_interaction/<int:interaction_id>/', sohbat_views.show_interaction, name='show_interaction'),
 ]
