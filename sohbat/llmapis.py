@@ -3,11 +3,11 @@ import os
 from groq import Groq
 from openai import OpenAI
 
-from .models import LLM, SystemPrompt, UserPrompt
+from .models import LLM, SystemPrompt
 
 
 def get_response(
-    llm: LLM, system_prompt: SystemPrompt, user_prompt: UserPrompt, random_seed: int
+    llm: LLM, system_prompt: SystemPrompt, user_prompt: str, random_seed: int
 ) -> str:
     model = llm.model_name_version
     if llm.provider_name == "OpenAI":
@@ -23,7 +23,7 @@ def get_response(
         model=model,
         messages=[
             {"role": "system", "content": system_prompt.prompt},
-            {"role": "user", "content": user_prompt.prompt},
+            {"role": "user", "content": user_prompt},
         ],
         temperature=1,
         max_tokens=1024,

@@ -27,18 +27,10 @@ class SystemPrompt(models.Model):
         return self.name
 
 
-class UserPrompt(models.Model):
-    prompt = models.TextField(unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.prompt
-
-
 class Interaction(models.Model):
     llm = models.ForeignKey(LLM, on_delete=models.CASCADE)
     system_prompt = models.ForeignKey(SystemPrompt, on_delete=models.CASCADE)
-    user_prompt = models.ForeignKey(UserPrompt, on_delete=models.CASCADE)
+    user_prompt = models.TextField(blank=False, null=False)
     response = models.TextField(blank=True, null=True)
     random_seed = models.IntegerField(default=42)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.views.decorators.csrf import csrf_exempt
-from .models import LLM, SystemPrompt, UserPrompt, Interaction
+from .models import LLM, SystemPrompt, Interaction
 from .llmapis import get_response
 
 
@@ -56,9 +56,7 @@ def create_interaction(request):
         return system_prompt_response
     system_prompt = system_prompt_response
 
-    user_prompt, _ = UserPrompt.objects.get_or_create(
-        prompt=request.POST["user_prompt"]
-    )
+    user_prompt = request.POST["user_prompt"]
 
     try:
         random_seed = int(request.POST["random_seed"])
