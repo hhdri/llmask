@@ -32,7 +32,7 @@ class Interaction(models.Model):
     system_prompt = models.ForeignKey(SystemPrompt, on_delete=models.CASCADE)
     user_prompt = models.TextField(blank=False, null=False)
     response = models.TextField(blank=True, null=True)
-    random_seed = models.IntegerField(default=42)
+    random_seed = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
