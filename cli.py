@@ -1,8 +1,11 @@
+from typing import List
 import argparse
 import requests
 
+api_endpoint = "http://localhost:8000/"
 
-def create_interaction(api_url, llm, system_prompt, user_prompt, random_seed):
+
+def create_interaction(llm, system_prompt, user_prompt, random_seed):
     data = {
         "llm": llm,
         "system_prompt": system_prompt,
@@ -10,7 +13,7 @@ def create_interaction(api_url, llm, system_prompt, user_prompt, random_seed):
         "random_seed": random_seed,
     }
 
-    response = requests.post(api_url, data=data)
+    response = requests.post(api_endpoint + "create_interaction/", data=data)
 
     if response.status_code == 201:
         print("Interaction created successfully!")
@@ -23,30 +26,36 @@ def create_interaction(api_url, llm, system_prompt, user_prompt, random_seed):
         print("Error:", response.json())
 
 
+def get_llms() -> List[str]:
+    response = requests.get(api_endpoint + "get_llms/")
+    return response.json()
+
+
+def get_system_prompts() -> List[str]:
+    response = requests.get(api_endpoint + "get_system_prompts/")
+    return response.json()
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Create an interaction in the Django API."
     )
 
     parser.add_argument(
-        "--api_url",
-        help="The API endpoint URL to send the POST request to.",
-        default="http://localhost:8000/create_interaction/",
+        "--llm",
+        default="gpt-4o-mini-2024-07-18",
+        choices=get_llms(),
     )
+    parser.add_argument("--random_seed", type=int, default=42)
     parser.add_argument(
-        "--llm", help="The slug of the LLM.", default="gpt-4o-mini-2024-07-18"
+        "system_prompt",
+        choices=get_system_prompts(),
     )
-    parser.add_argument(
-        "--random_seed", type=int, help="The random seed as an integer.", default=42
-    )
-    parser.add_argument("system_prompt", help="The name of the System Prompt.")
-    parser.add_argument("user_prompt", help="The text of the User Prompt.")
+    parser.add_argument("user_prompt")
 
     args = parser.parse_args()
 
-    create_interaction(
-        args.api_url, args.llm, args.system_prompt, args.user_prompt, args.random_seed
-    )
+    create_interaction(args.llm, args.system_prompt, args.user_prompt, args.random_seed)
 
 
 if __name__ == "__main__":
