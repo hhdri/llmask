@@ -17,10 +17,10 @@ def create_interaction(llm, system_prompt, user_prompt, random_seed):
 
     if response.status_code == 201:
         print("Interaction created successfully!")
-        print("Response data:", response.json())
+        print("Response data:\n", response.json()['response'], sep="")
     elif response.status_code == 200:
         print("Interaction already exists.")
-        print("Response data:", response.json())
+        print("Response data:\n", response.json()['response'], sep="")
     else:
         print(f"Failed to create interaction. Status code: {response.status_code}")
         print("Error:", response.json())
