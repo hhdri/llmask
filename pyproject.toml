@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "llmask"
 version = "0.1"
 description = "A simple CLI tool"
-dependencies = []
+dependencies = ["openai", "groq"]
 
 [project.scripts]
 llmask = "llmask:cli_entrypoint"
