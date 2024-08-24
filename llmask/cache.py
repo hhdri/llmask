@@ -52,7 +52,9 @@ def disk_cache(func):
     def wrapper(*args, **kwargs):
         key = generate_cache_key(func.__name__, args, kwargs)
         if key in cache:
+            print("Cache hit. Returning cached result.")
             return cache[key]["result"]
+        print("Cache miss. Calling function.")
 
         result = func(*args, **kwargs)
         cache[key] = {
