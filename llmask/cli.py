@@ -5,10 +5,7 @@ from functools import partial
 from groq import Groq
 from openai import OpenAI
 
-
-# MAX_TOKENS = 1024
-# TEMPERATURE = 1
-# TOP_P = 1
+from .cache import disk_cache
 
 
 class NvidiaLLM:
@@ -99,6 +96,21 @@ class OpenAILLM:
         return completion.choices[0].message.content
 
 
+@disk_cache
+def get_response(
+    llm, system_prompt, user_prompt, random_seed, max_tokens, temperature, top_p
+):
+    response = model_slugs[llm](
+        system_prompt=system_prompt,
+        user_prompt=user_prompt,
+        random_seed=random_seed,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        top_p=top_p,
+    )
+    return response
+
+
 model_slugs = {
     "gpt-4o-mini-v1": partial(
         OpenAILLM.get_response, model_name="gpt-4o-mini-2024-07-18"
@@ -147,7 +159,8 @@ def cli_entrypoint(system_prompt, description):
 
     args = parser.parse_args()
 
-    response = model_slugs[args.llm](
+    response = get_response(
+        llm=args.llm,
         system_prompt=system_prompt,
         user_prompt=args.user_prompt,
         random_seed=args.random_seed,
