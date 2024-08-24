@@ -6,14 +6,21 @@ from groq import Groq
 from openai import OpenAI
 
 
-MAX_TOKENS = 1024
-TEMPERATURE = 1
+# MAX_TOKENS = 1024
+# TEMPERATURE = 1
+# TOP_P = 1
 
 
 class NvidiaLLM:
     @staticmethod
     def get_response(
-        model_name: str, system_prompt: str, user_prompt: str, random_seed: int
+        model_name: str,
+        system_prompt: str,
+        user_prompt: str,
+        random_seed: int,
+        max_tokens,
+        temperature,
+        top_p,
     ):
         client = OpenAI(
             base_url="https://integrate.api.nvidia.com/v1",
@@ -25,11 +32,9 @@ class NvidiaLLM:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
-            temperature=TEMPERATURE,
-            max_tokens=MAX_TOKENS,
-            top_p=1,
-            stream=False,
-            stop=None,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            top_p=top_p,
             seed=random_seed,
         )
 
@@ -39,7 +44,13 @@ class NvidiaLLM:
 class GroqLLM:
     @staticmethod
     def get_response(
-        model_name: str, system_prompt: str, user_prompt: str, random_seed: int
+        model_name: str,
+        system_prompt: str,
+        user_prompt: str,
+        random_seed: int,
+        max_tokens,
+        temperature,
+        top_p,
     ):
         client = Groq()
         completion = client.chat.completions.create(
@@ -48,10 +59,10 @@ class GroqLLM:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
-            temperature=TEMPERATURE,
-            max_tokens=MAX_TOKENS,
-            top_p=1,
-            stream=False,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            top_p=top_p,
+            stream=True,
             stop=None,
             seed=random_seed,
         )
@@ -62,7 +73,13 @@ class GroqLLM:
 class OpenAILLM:
     @staticmethod
     def get_response(
-        model_name: str, system_prompt: str, user_prompt: str, random_seed: int
+        model_name: str,
+        system_prompt: str,
+        user_prompt: str,
+        random_seed: int,
+        max_tokens,
+        temperature,
+        top_p,
     ):
         client = OpenAI()
         completion = client.chat.completions.create(
@@ -71,9 +88,9 @@ class OpenAILLM:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
-            temperature=TEMPERATURE,
-            max_tokens=MAX_TOKENS,
-            top_p=1,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            top_p=top_p,
             seed=random_seed,
             frequency_penalty=0,
             presence_penalty=0,
@@ -123,10 +140,10 @@ def cli_entrypoint():
         choices=model_slugs.keys(),
     )
     parser.add_argument("--random_seed", type=int, default=42)
-    parser.add_argument(
-        "system_prompt",
-        choices=system_prompts.keys()
-    )
+    parser.add_argument("--max_tokens", type=int, default=1024)
+    parser.add_argument("--temperature", type=float, default=1)
+    parser.add_argument("--top_p", type=float, default=1)
+    parser.add_argument("system_prompt", choices=system_prompts.keys())
     parser.add_argument("user_prompt")
 
     args = parser.parse_args()
@@ -135,6 +152,9 @@ def cli_entrypoint():
         system_prompt=system_prompts[args.system_prompt],
         user_prompt=args.user_prompt,
         random_seed=args.random_seed,
+        max_tokens=args.max_tokens,
+        temperature=args.temperature,
+        top_p=args.top_p,
     )
 
     print(response)
