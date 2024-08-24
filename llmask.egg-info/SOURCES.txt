@@ -1,8 +1,0 @@
-pyproject.toml
-llmask/__init__.py
-llmask/cli.py
-llmask.egg-info/PKG-INFO
-llmask.egg-info/SOURCES.txt
-llmask.egg-info/dependency_links.txt
-llmask.egg-info/entry_points.txt
-llmask.egg-info/top_level.txt
