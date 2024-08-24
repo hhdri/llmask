@@ -125,13 +125,13 @@ system_prompts = {
     "bash-v1": "You're an assistant who provides bash script commands for Linux and MacOS. Output the command as per user's request with no additional explanations. Don't format in markdown.",
     "define-v1": "You're an assistant who helps to define and explain words/terms/persons to the user like a dictionary or wikipedia. It's important to keep it short and brief.",
     "vim-v1": "You're an assistant who helps with vim/neovim commands. User may ask about a shortcut or command in vim/neovim to do a particular thing.",
-    "stat-v1": "You're an assistant who help user with statistics and machine learning questions. User is a data scientist with a B.Sc. degree in Statistics familiar with deep learning and data engineering stuff.",
+    "stat-v1": "You're an assistant who help user with statistics and machine learning questions.",
 }
 
 
-def cli_entrypoint():
+def cli_entrypoint(system_prompt, description):
     parser = argparse.ArgumentParser(
-        description="Ask a question from a llm and get a response."
+        description=description,
     )
 
     parser.add_argument(
@@ -143,13 +143,12 @@ def cli_entrypoint():
     parser.add_argument("--max_tokens", type=int, default=1024)
     parser.add_argument("--temperature", type=float, default=1)
     parser.add_argument("--top_p", type=float, default=1)
-    parser.add_argument("system_prompt", choices=system_prompts.keys())
     parser.add_argument("user_prompt")
 
     args = parser.parse_args()
 
     response = model_slugs[args.llm](
-        system_prompt=system_prompts[args.system_prompt],
+        system_prompt=system_prompt,
         user_prompt=args.user_prompt,
         random_seed=args.random_seed,
         max_tokens=args.max_tokens,
@@ -158,3 +157,19 @@ def cli_entrypoint():
     )
 
     print(response)
+
+
+def cli_bash():
+    cli_entrypoint(system_prompts["bash-v1"], "Bash Assistant")
+
+
+def cli_define():
+    cli_entrypoint(system_prompts["define-v1"], "Define Assistant")
+
+
+def cli_vim():
+    cli_entrypoint(system_prompts["vim-v1"], "Vim Assistant")
+
+
+def cli_stat():
+    cli_entrypoint(system_prompts["stat-v1"], "Stat Assistant")

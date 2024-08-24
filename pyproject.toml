@@ -9,4 +9,7 @@ description = "A simple CLI tool"
 dependencies = ["openai", "groq"]
 
 [project.scripts]
-llmask = "llmask:cli_entrypoint"
+llmbash = "llmask:cli_bash"
+llmdefine = "llmask:cli_define"
+llmvim = "llmask:cli_vim"
+llmstat = "llmask:cli_stat"
