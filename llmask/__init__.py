@@ -1,0 +1,1 @@
+from .cli import cli_entrypoint as cli_entrypoint
